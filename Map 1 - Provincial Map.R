@@ -10,7 +10,7 @@ library(rgdal)
 
 # Set Working Directory
 # Note: Replace with your desired workspace
-setwd('C:/Users/cesur/Desktop/StatsCan/Mapping with Leaflet')
+setwd('C:/Users/cesur/Desktop/StatsCan/R-Leaflet-Maps')
 
 
 ### Shapefile Steps
