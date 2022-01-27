@@ -33,7 +33,7 @@ shape_simplified <- rmapshaper::ms_simplify(shape_lat_lon)
 #   1) Rename column name to REF_DATE 
 #   2) Create new column for CSDUID
 #   3) Keep only required columns
-data_in <- read.csv("C:/Users/cesur/Desktop/StatsCan/data/CSD_Population_2021_1710014201.csv")
+data_in <- read.csv("data/CSD_Population_2021_1710014201.csv")
 data_clean <- data_in %>%
   rename("REF_DATE" = "ï..REF_DATE") %>%
   mutate(CSDUID = substr(DGUID, nchar(DGUID)-7+1, nchar(DGUID))) %>%

@@ -36,7 +36,7 @@ leaflet(shape_simplified) %>%
 
 ### Data Steps
 # Import Provincial Population data
-data <- read.csv("C:/Users/cesur/Desktop/StatsCan/data/Population_Dec2021_1710000901.csv")
+data <- read.csv("data/Population_Dec2021_1710000901.csv")
 
 # Create a continuous palette function based on population domain
 pal <- colorNumeric(
