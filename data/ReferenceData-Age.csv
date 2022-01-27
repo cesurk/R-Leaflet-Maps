@@ -1,0 +1,12 @@
+Age Group Codes/ Codes de groupes d'âge,Age,âge
+24,24 and under ,24 ans et moins
+25,25 - 34,25 - 34
+35,35 - 44,35 - 44
+45,45 - 54,45 - 54
+55,55 - 64,55 - 64
+65,65 and older,65 ans et plus
+-1,Unknown Years,Années non connues
+,,
+Notes/Remarques,,
+,Age group code ‘-1’ (Unknown Years) is used when the age of an applicant is not known.,
+,"Le code de groupe d'âge ""-1"" (années non connues) est utilisé lorsque l'âge d'un demandeur n'est pas connu.",

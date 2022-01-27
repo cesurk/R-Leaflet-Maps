@@ -18,7 +18,9 @@ The [CSD Map File](Map-2-CSD-Map.R) example file also creates two maps:
 
 ## Data Sources
 
-1. [Statistics Canada's 2016 Census Boundary files](https://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-2016-eng.cfm)
+1. [Statistics Canada, 2016 Census Boundary files](https://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-2016-eng.cfm)
 Accessed: January 20, 2022
 
-2. [Statistics Canada's Population estimates, July 1, by census subdivision, 2016 boundaries](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1710014201)
+2. [Statistics Canada, Population estimates, July 1, by census subdivision, 2016 boundaries](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1710014201)
+
+3. [Statistics Canada, Canada Emergency Response Benefit Statistics - Total unique applicants by province/territory and age group](https://open.canada.ca/data/en/dataset/94906755-1cb9-4c2d-aaa6-bf365f3d4de8/resource/65c2066e-27d8-4883-8f64-8f9a0245ad0e)
