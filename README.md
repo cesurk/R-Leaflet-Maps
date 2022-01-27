@@ -2,18 +2,25 @@
 
 Created for CANDEV 2022
 
-## 1 - Provincial Map
+## 1 - Provincial Population Map
 
 The [Provincial Map File](Map-1-Provincial-Map.R) example file creates two maps:
 1. A simple provincial map using only the shapefiles.
 2. A provincial map that plots Statistics Canada's population estimates by province.
 
 
-## 2 - CSD Map
+## 2 - CSD Population Map
 
-The [CSD Map File](Map-2-CSD-Map.R) example file also creates two maps:
+The [CSD Map File](Map-2-CSD-Map.R) example file creates two maps:
 1. A map that plots Statistics Canada's 2021 population estimates by CSD. 
 2. A map that plots the percent change in Statistics Canada's population estimates by CSD from 2020 to 2021.
+
+
+## 2 - Provincial CERB Map
+
+The [Provincial CERB Map File](Map-3-CERB-Map.R) example file creates two maps:
+1. A map that plots the number of CERB applicants by province. 
+2. A map that plots the share of CERB applicants by province (applicants per 1,000). 
 
 
 ## Data Sources

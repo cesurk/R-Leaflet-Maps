@@ -29,15 +29,23 @@ shape_simplified <- rmapshaper::ms_simplify(shape_lat_lon)
 
 ### Data Steps
 
-# Import and clean CSD Population data:
-#   1) Rename column name to REF_DATE 
-#   2) Create new column for CSDUID
-#   3) Keep only required columns
+# Import CERB data:
 data_in <- read.csv("data/PCU_total_des_candidats_uniques_PT_groupe_age-CERB_total_unique_applicants_PT_Age_group.csv")
-data_ref <- read.csv("data/ReferenceData-Age.csv")
-#data_clean <- data_in %>%
-#  rename("REF_DATE" = "ï..REF_DATE") %>%
-#  mutate(CSDUID = substr(DGUID, nchar(DGUID)-7+1, nchar(DGUID))) %>%
-#  select(c(CSDUID, REF_DATE, VALUE))
+data_ref <- read.csv("data/ReferenceData-Age.csv") %>% 
+  rename("Group" = "Age.Group.Codes..Codes.de.groupes.d.âge")
+
+# Clean CERB Data:
+#   1) Rename column names 
+#   2) Convert Group column to character from numeric for join 
+#   3) Join to reference data for full group names
+#   4) Keep only required columns
+data_clean <- data_in %>%
+  rename("Week" = "pcu_date_des_donnees_inclus.cerb_week_ending_date") %>%
+  rename("PRCode" = "code_de_la_subdivision_canadienne.canadian_subdivision_code") %>%
+  rename("Group" = "code_de_groupe_dage.age_group_code") %>%
+  mutate("Group" = as.character("Group")) %>%
+  rename("Value" = "compte_unique_du_demandeur.unique_applicant_count") %>%
+  left_join(data_ref, by=c("Group"="Group")) %>%
+  select(c(Week, PRCode, Group, Age))
 
 
