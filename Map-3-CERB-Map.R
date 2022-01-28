@@ -33,6 +33,7 @@ shape_simplified <- rmapshaper::ms_simplify(shape_lat_lon)
 data_in <- read.csv("data/PCU_total_des_candidats_uniques_PT_groupe_age-CERB_total_unique_applicants_PT_Age_group.csv")
 data_ref <- read.csv("data/ReferenceData-Age.csv") %>% 
   rename("Group" = "Age.Group.Codes..Codes.de.groupes.d.âge")
+pr_concordance <- read.csv("data/province_concordance.csv")
 
 # Clean CERB Data:
 #   1) Rename column names 
@@ -42,10 +43,44 @@ data_ref <- read.csv("data/ReferenceData-Age.csv") %>%
 data_clean <- data_in %>%
   rename("Week" = "pcu_date_des_donnees_inclus.cerb_week_ending_date") %>%
   rename("PRCode" = "code_de_la_subdivision_canadienne.canadian_subdivision_code") %>%
-  rename("Group" = "code_de_groupe_dage.age_group_code") %>%
-  mutate("Group" = as.character("Group")) %>%
   rename("Value" = "compte_unique_du_demandeur.unique_applicant_count") %>%
+  rename("Group" = "code_de_groupe_dage.age_group_code") %>%
+  mutate("Group" = as.character(Group)) %>%
   left_join(data_ref, by=c("Group"="Group")) %>%
-  select(c(Week, PRCode, Group, Age))
+  select(c(Week, PRCode, Age, Value))
 
+
+# Data aggregation:
+#   1) Select only data from week of 2020-10-04
+#   2) Sum all age groups together 
+data_agg <- data_clean %>%
+  filter(Week == "2020-10-04") %>%
+  group_by(PRCode) %>% 
+  summarise(VALUE = sum(Value))
+
+
+### Mapping Steps
+
+# Create a continuous palette function based on population domain
+pal <- colorNumeric(
+  palette = "Blues",
+  domain = data_agg$VALUE)
+
+
+# Join desired data to Shapefile data
+shape_and_data <- shape_simplified %>%
+  left_join(pr_concordance, by=c('PREABBR'='shape_key')) %>%
+  left_join(data_agg, by=c('data_key'='PRCode'))
+
+
+### Map 1 - CERB Applicants by Province 
+leaflet(shape_and_data) %>%
+  addPolygons(
+    color = "#EEEEEE", weight = 0.3, opacity = 1,
+    fillColor = ~pal(VALUE), fillOpacity = 1,
+    label = ~paste0(PRNAME, ": ", formatC(VALUE, big.mark = ","))) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addLegend("bottomright", pal = pal, values = ~VALUE,
+            title = "Unique CERB Applicants (Week of 2020-10-04)",
+            opacity = 1)
 
