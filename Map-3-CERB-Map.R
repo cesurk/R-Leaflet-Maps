@@ -84,3 +84,37 @@ leaflet(shape_and_data) %>%
             title = "Unique CERB Applicants (Week of 2020-10-04)",
             opacity = 1)
 
+
+### Map 2 - CERB Applicants per thousand people by Province 
+
+# Read in population data
+pop_in <- read.csv("data/Province_Population_1710014201.csv")
+pop_clean <- pop_in %>%
+  rename("REF_DATE" = "ï..REF_DATE") %>%
+  rename("POP" = "VALUE") %>%
+  filter(REF_DATE == 2020) %>%
+  select(c(GEO, REF_DATE, POP))
+
+# Join to existing shape and data file
+shape_and_data <- shape_and_data %>%
+  left_join(pop_clean, by=c('PRENAME'='GEO')) %>%
+  mutate(SHARE_PER_K = round((VALUE / POP) * 1000), digits=1)
+
+# Create a continuous palette function based on population domain
+pal <- colorNumeric(
+  palette = "Blues",
+  domain = shape_and_data$SHARE_PER_K)
+
+# Map 2 - Map share of applicants
+leaflet(shape_and_data) %>%
+  addPolygons(
+    color = "#EEEEEE", weight = 0.3, opacity = 1,
+    fillColor = ~pal(SHARE_PER_K), fillOpacity = 1,
+    label = ~paste0(PRNAME, ": ", formatC(SHARE_PER_K, big.mark = ","))) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addLegend("bottomright", pal = pal, values = ~SHARE_PER_K,
+            title = "Number of Unique CERB <br/> Applicants / 1,000 People <br/>(Week of 2020-10-04)",
+            opacity = 1)
+
+
+
