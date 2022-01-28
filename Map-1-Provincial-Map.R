@@ -36,19 +36,22 @@ leaflet(shape_simplified) %>%
 
 ### Data Steps
 # Import Provincial Population data
-data <- read.csv("data/Population_Dec2021_1710000901.csv")
+data_in <- read.csv("data/Province_Population_1710014201.csv")
+data_clean <- data_in %>%
+  rename("REF_DATE" = "ï..REF_DATE") %>%
+  filter(REF_DATE == 2021) %>%
+  select(c(GEO, REF_DATE, VALUE))
 
 # Create a continuous palette function based on population domain
 pal <- colorNumeric(
   palette = "Blues",
-  domain = data$VALUE)
+  domain = data_clean$VALUE)
 
 
 ### Mapping Steps
 
 # Join desired data to Shapefile data
-shape_and_data <- left_join(shape_simplified, data, by=c('PRENAME'='GEO'))
-
+shape_and_data <- left_join(shape_simplified, data_clean, by=c('PRENAME'='GEO'))
 
 
 ### Map 2 - Provincial Map of Population 
