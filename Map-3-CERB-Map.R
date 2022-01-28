@@ -59,21 +59,20 @@ data_agg <- data_clean %>%
   summarise(VALUE = sum(Value))
 
 
-### Mapping Steps
+
+### Map 1 - CERB Applicants by Province 
 
 # Create a continuous palette function based on population domain
 pal <- colorNumeric(
   palette = "Blues",
   domain = data_agg$VALUE)
 
-
 # Join desired data to Shapefile data
 shape_and_data <- shape_simplified %>%
   left_join(pr_concordance, by=c('PREABBR'='shape_key')) %>%
   left_join(data_agg, by=c('data_key'='PRCode'))
 
-
-### Map 1 - CERB Applicants by Province 
+# Map CERB Applicants on provincial map
 leaflet(shape_and_data) %>%
   addPolygons(
     color = "#EEEEEE", weight = 0.3, opacity = 1,
@@ -83,6 +82,7 @@ leaflet(shape_and_data) %>%
   addLegend("bottomright", pal = pal, values = ~VALUE,
             title = "Unique CERB Applicants (Week of 2020-10-04)",
             opacity = 1)
+
 
 
 ### Map 2 - CERB Applicants per thousand people by Province 
@@ -105,7 +105,7 @@ pal <- colorNumeric(
   palette = "Blues",
   domain = shape_and_data$SHARE_PER_K)
 
-# Map 2 - Map share of applicants
+# Map share of applicants on provincial map
 leaflet(shape_and_data) %>%
   addPolygons(
     color = "#EEEEEE", weight = 0.3, opacity = 1,
@@ -113,6 +113,6 @@ leaflet(shape_and_data) %>%
     label = ~paste0(PRNAME, ": ", formatC(SHARE_PER_K, big.mark = ","))) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addLegend("bottomright", pal = pal, values = ~SHARE_PER_K,
-            title = "Number of Unique CERB <br/> Applicants / 1,000 People <br/>(Week of 2020-10-04)",
+            title = "Number of Unique CERB <br/> Applicants Per 1,000 People <br/>(Week of 2020-10-04)",
             opacity = 1)
 

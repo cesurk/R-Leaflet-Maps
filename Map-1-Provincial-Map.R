@@ -26,12 +26,6 @@ shape_lat_lon <- st_transform(shape, 4326)
 shape_simplified <- rmapshaper::ms_simplify(shape_lat_lon)
 
 
-### Map 1 - Simple Provincial Map: 
-# Plot Shapefile on simple base map 
-leaflet(shape_simplified) %>%
-  addPolygons(
-    color = "#EEEEEE", weight = 0.3, opacity = 1,
-    fillColor = "#1572A1", fillOpacity = 0.3)
 
 
 ### Data Steps
@@ -48,13 +42,22 @@ pal <- colorNumeric(
   domain = data_clean$VALUE)
 
 
-### Mapping Steps
+
+### Map 1 - Very Simple Provincial Map: 
+# Plot Shapefile on simple base map 
+leaflet(shape_simplified) %>%
+  addPolygons(
+    color = "#EEEEEE", weight = 0.3, opacity = 1,
+    fillColor = "#1572A1", fillOpacity = 0.3)
+
+
+
+### Map 2 - Provincial Map of Population:
 
 # Join desired data to Shapefile data
 shape_and_data <- left_join(shape_simplified, data_clean, by=c('PRENAME'='GEO'))
 
-
-### Map 2 - Provincial Map of Population 
+# Plot population on provincial polygons
 leaflet(shape_and_data) %>%
   addPolygons(
     color = "#EEEEEE", weight = 0.3, opacity = 1,
@@ -67,19 +70,17 @@ leaflet(shape_and_data) %>%
 
 
 
-
-
-# Map 3 - Use circles instead of colours
+### Map 3 - Provincial Map of Population Using Circles:
+# Calculate centroid of each province
 centroids <- shape_simplified %>% 
   st_centroid() %>%
   select(c(PRUID, geometry)) %>%
   unnest_wider(geometry) %>%
-  rename("long_centroid" = "...1", "lati_centroid" = "...2")
+  rename("cent_long" = "...1", "cent_lati" = "...2")
 
 # Join centroid to shape and data file
 shape_and_data <- shape_and_data %>%
   left_join(centroids, by=c('PRUID'='PRUID'))
-
 
 # Map population data on provincial polygon
 leaflet(shape_and_data) %>%
@@ -88,6 +89,6 @@ leaflet(shape_and_data) %>%
     fillColor = "#EEEEEE", fillOpacity = 1,
     label = ~paste0(PRNAME, ": ", formatC(VALUE, big.mark = ","))) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
-  addCircles(lng = ~long_centroid, lat = ~lati_centroid, weight = 1,
+  addCircles(lng = ~cent_long, lat = ~cent_lati, weight = 1,
              radius = ~sqrt(VALUE) * 150, 
              label = ~paste0(PRNAME, ": ", formatC(VALUE, big.mark = ",")))

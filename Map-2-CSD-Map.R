@@ -57,7 +57,8 @@ data_pct_chg <- data_clean %>%
   filter((`2021` > 1000) & (`2020` < 1000) | (abs(`2021`-`2020`) > 100))
 
 
-### Map 3 - Simple CSD-Level Map of population
+
+### Map 1 - Simple CSD-Level Map of population
 
 # Join data to the CSD Shapefile
 shape_and_data <- left_join(shape_simplified, data_2021_population, by=c('CSDUID'='CSDUID'))
@@ -81,8 +82,7 @@ leaflet(shape_and_data) %>%
 
 
 
-
-### Map 4 - CSD-Level Map of Population Percent Change in Ontario
+### Map 2 - CSD-Level Map of Population Percent Change in Ontario
 
 # Join data to the CSD Shapefile
 shape_and_data <- shape_simplified %>% 
@@ -99,6 +99,7 @@ pal <- colorNumeric(
   domain = shape_and_data$PCT_CHG
 )
 
+# Map percent change in population on CSD polygon
 leaflet(shape_and_data) %>%
   addPolygons(
     color = "black", weight = 0.3, opacity = 1,
