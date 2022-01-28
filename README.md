@@ -4,9 +4,10 @@ Created for CANDEV 2022
 
 ## 1 - Provincial Population Map
 
-The [Provincial Map File](Map-1-Provincial-Map.R) example file creates two maps:
+The [Provincial Map File](Map-1-Provincial-Map.R) example file creates three maps:
 1. A simple provincial map using only the shapefiles.
 2. A provincial map that plots Statistics Canada's population estimates by province.
+3. A provincial map that plots Statistics Canada's population estimates by province using circle markers
 
 
 ## 2 - CSD Population Map
