@@ -91,14 +91,14 @@ leaflet(shape_and_data) %>%
 pop_in <- read.csv("data/Province_Population_1710014201.csv")
 pop_clean <- pop_in %>%
   rename("REF_DATE" = "ï..REF_DATE") %>%
-  rename("POP" = "VALUE") %>%
+  rename(POP = "VALUE") %>%
   filter(REF_DATE == 2020) %>%
   select(c(GEO, REF_DATE, POP))
 
 # Join to existing shape and data file
 shape_and_data <- shape_and_data %>%
   left_join(pop_clean, by=c('PRENAME'='GEO')) %>%
-  mutate(SHARE_PER_K = round((VALUE / POP) * 1000), digits=1)
+  mutate(SHARE_PER_K = round((VALUE / POP * 1000), digits=1))
 
 # Create a continuous palette function based on population domain
 pal <- colorNumeric(
@@ -115,6 +115,4 @@ leaflet(shape_and_data) %>%
   addLegend("bottomright", pal = pal, values = ~SHARE_PER_K,
             title = "Number of Unique CERB <br/> Applicants / 1,000 People <br/>(Week of 2020-10-04)",
             opacity = 1)
-
-
 

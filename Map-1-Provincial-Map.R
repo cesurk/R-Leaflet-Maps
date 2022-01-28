@@ -65,3 +65,29 @@ leaflet(shape_and_data) %>%
             title = "Population (Q4 2021)",
             opacity = 1)
 
+
+
+
+
+# Map 3 - Use circles instead of colours
+centroids <- shape_simplified %>% 
+  st_centroid() %>%
+  select(c(PRUID, geometry)) %>%
+  unnest_wider(geometry) %>%
+  rename("long_centroid" = "...1", "lati_centroid" = "...2")
+
+# Join centroid to shape and data file
+shape_and_data <- shape_and_data %>%
+  left_join(centroids, by=c('PRUID'='PRUID'))
+
+
+# Map population data on provincial polygon
+leaflet(shape_and_data) %>%
+  addPolygons(
+    color = "#EEEEEE", weight = 0.3, opacity = 1,
+    fillColor = "#EEEEEE", fillOpacity = 1,
+    label = ~paste0(PRNAME, ": ", formatC(VALUE, big.mark = ","))) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles(lng = ~long_centroid, lat = ~lati_centroid, weight = 1,
+             radius = ~sqrt(VALUE) * 150, 
+             label = ~paste0(PRNAME, ": ", formatC(VALUE, big.mark = ",")))
