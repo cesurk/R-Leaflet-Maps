@@ -17,7 +17,7 @@ The [CSD Map File](Map-2-CSD-Map.R) example file creates two maps:
 2. A map that plots the percent change in Statistics Canada's population estimates by CSD from 2020 to 2021.
 
 
-## 2 - Provincial CERB Map
+## 3 - Provincial CERB Map
 
 The [Provincial CERB Map File](Map-3-CERB-Map.R) example file creates two maps:
 1. A map that plots the number of CERB applicants by province. 
