@@ -1,13 +1,11 @@
 # Install Required Packages as required
-# install.packages(c("shiny", "leaflet", "sf"))
+# install.packages(c("shiny", "leaflet", "sf", "tidyr"))
 
 # Read in Required Packages
-library(shiny)
-library(leaflet)
-library(sf)
-library(dplyr)
-library(rgdal)
-library(tidyr)
+library(leaflet) # Package to build maps 
+library(sf) # Package that helps work with shapefiles
+library(dplyr) # Very common package for data manipulation
+library(tidyr) # Very common package for data manipulation
 
 # Set Working Directory
 # Note: Replace with your desired workspace

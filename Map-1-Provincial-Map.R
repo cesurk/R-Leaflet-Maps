@@ -1,12 +1,11 @@
 # Install Required Packages as required
-# install.packages(c("shiny", "leaflet", "sf"))
+# install.packages(c("shiny", "leaflet", "sf", "tidyr"))
 
 # Read in Required Packages
-library(shiny)
-library(leaflet)
-library(sf)
-library(dplyr)
-library(rgdal)
+library(leaflet) # Package to build maps 
+library(sf) # Package that helps work with shapefiles
+library(dplyr) # Very common package for data manipulation
+library(tidyr) # Very common package for data manipulation
 
 # Set Working Directory
 # Note: Replace with your desired workspace
@@ -24,8 +23,6 @@ shape_lat_lon <- st_transform(shape, 4326)
 
 # 3) Simply shapefile for quicker mapping
 shape_simplified <- rmapshaper::ms_simplify(shape_lat_lon)
-
-
 
 
 ### Data Steps
@@ -69,26 +66,3 @@ leaflet(shape_and_data) %>%
             opacity = 1)
 
 
-
-### Map 3 - Provincial Map of Population Using Circles:
-# Calculate centroid of each province
-centroids <- shape_simplified %>% 
-  st_centroid() %>%
-  select(c(PRUID, geometry)) %>%
-  unnest_wider(geometry) %>%
-  rename("cent_long" = "...1", "cent_lati" = "...2")
-
-# Join centroid to shape and data file
-shape_and_data <- shape_and_data %>%
-  left_join(centroids, by=c('PRUID'='PRUID'))
-
-# Map population data on provincial polygon
-leaflet(shape_and_data) %>%
-  addPolygons(
-    color = "#EEEEEE", weight = 0.3, opacity = 1,
-    fillColor = "#EEEEEE", fillOpacity = 1,
-    label = ~paste0(PRNAME, ": ", formatC(VALUE, big.mark = ","))) %>%
-  addProviderTiles(providers$CartoDB.Positron) %>%
-  addCircles(lng = ~cent_long, lat = ~cent_lati, weight = 1,
-             radius = ~sqrt(VALUE) * 150, 
-             label = ~paste0(PRNAME, ": ", formatC(VALUE, big.mark = ",")))
