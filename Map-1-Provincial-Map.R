@@ -62,7 +62,7 @@ leaflet(shape_and_data) %>%
     label = ~paste0(PRNAME, ": ", formatC(VALUE, big.mark = ","))) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addLegend("bottomright", pal = pal, values = ~VALUE,
-            title = "Population (Q4 2021)",
+            title = "Population (2021)",
             opacity = 1)
 
 
