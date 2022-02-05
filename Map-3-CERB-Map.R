@@ -89,7 +89,7 @@ leaflet(shape_and_data) %>%
 pop_in <- read.csv("data/Province_Population_1710014201.csv")
 pop_clean <- pop_in %>%
   rename("REF_DATE" = "ï..REF_DATE") %>%
-  rename(POP = "VALUE") %>%
+  rename("POP" = "VALUE") %>%
   filter(REF_DATE == 2020) %>%
   select(c(GEO, REF_DATE, POP))
 

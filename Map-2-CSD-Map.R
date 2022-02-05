@@ -34,7 +34,7 @@ shape_simplified <- rmapshaper::ms_simplify(shape_lat_lon)
 data_in <- read.csv("data/CSD_Population_1710014201.csv")
 data_clean <- data_in %>%
   rename("REF_DATE" = "ï..REF_DATE") %>%
-  mutate(CSDUID = substr(DGUID, nchar(DGUID)-7+1, nchar(DGUID))) %>%
+  mutate(CSDUID = substr(DGUID, nchar(DGUID)-6, nchar(DGUID))) %>%
   select(c(CSDUID, REF_DATE, VALUE))
 
 # Data Set 1 - 2021 Population Data:
@@ -59,7 +59,9 @@ data_pct_chg <- data_clean %>%
 ### Map 1 - Simple CSD-Level Map of population
 
 # Join data to the CSD Shapefile
-shape_and_data <- left_join(shape_simplified, data_2021_population, by=c('CSDUID'='CSDUID'))
+shape_and_data <- left_join(shape_simplified, data_2021_population, by=c('CSDUID'='CSDUID')) %>%
+  filter(PRUID == 35)
+  # e.g. Ontario = 35, Quebec = 24, British Columbia = 59, ...
 
 # Create a color palette function based on domain
 pal <- colorNumeric(
@@ -80,14 +82,14 @@ leaflet(shape_and_data) %>%
 
 
 
-### Map 2 - CSD-Level Map of Population Percent Change in Ontario
+### Map 2 - CSD-Level Map of Population Percent Change in Montreal
 
 # Join data to the CSD Shapefile
 shape_and_data <- shape_simplified %>% 
   left_join(data_pct_chg, by=c('CSDUID'='CSDUID')) %>%
   #filter(PRUID == 35)
   # e.g. Ontario = 35, Quebec = 24, British Columbia = 59, ...
-  filter(CMANAME == "Montréal")
+  filter(CMANAME == "Toronto")
   # e.g. "Montréal", "Toronto", "Ottawa - Gatineau (Ontario part / partie de l'Ontario)"
 
 # Create a color palette function based on domain, using five bins
