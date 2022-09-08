@@ -89,7 +89,7 @@ shape_and_data <- shape_simplified %>%
   left_join(data_pct_chg, by=c('CSDUID'='CSDUID')) %>%
   #filter(PRUID == 35)
   # e.g. Ontario = 35, Quebec = 24, British Columbia = 59, ...
-  filter(CMANAME == "Toronto")
+  filter(CMANAME == "Montréal")
   # e.g. "Montréal", "Toronto", "Ottawa - Gatineau (Ontario part / partie de l'Ontario)"
 
 # Create a color palette function based on domain, using five bins
@@ -103,7 +103,7 @@ pal <- colorNumeric(
 leaflet(shape_and_data) %>%
   addPolygons(
     color = "black", weight = 0.3, opacity = 1,
-    fillColor = ~pal(PCT_CHG), fillOpacity = 1,
+    fillColor = ~pal(PCT_CHG), fillOpacity = 0.7,
     label = ~paste0(CSDNAME, ": ", PCT_CHG, "%")) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addLegend("bottomright", pal = pal, values = ~PCT_CHG,
